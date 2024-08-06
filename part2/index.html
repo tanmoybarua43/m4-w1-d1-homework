@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Validator</title>
+    <!-- Add Vue.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        .has_required {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-6 my-5">
+                    <password-helper inline-template>
+                        <div>
+                            <div class="form-group mb-3">
+                                <label for="password">Enter Password:</label>
+                                <input type="password" id="password" class="form-control" v-model="password">
+                            </div>
+                            <span :class="lengthValid ? 'has_required' : ''">At least 6 characters</span><br>
+                            <span :class="lowercaseValid ? 'has_required' : ''">At least one lowercase letter</span><br>
+                            <span :class="uppercaseValid ? 'has_required' : ''">At least one uppercase letter</span><br>
+                            <span :class="digitValid ? 'has_required' : ''">At least one digit</span><br>
+                        </div>
+                    </password-helper>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Vue.component('password-helper', {
+            data: function() {
+                return {
+                    password: '',
+                    lengthValid: false,
+                    lowercaseValid: false,
+                    uppercaseValid: false,
+                    digitValid: false
+                };
+            },
+            watch: {
+                password: function(newPassword) {
+                    this.lengthValid = newPassword.length >= 6;
+                    this.lowercaseValid = /[a-z]/.test(newPassword);
+                    this.uppercaseValid = /[A-Z]/.test(newPassword);
+                    this.digitValid = /\d/.test(newPassword);
+                }
+            }
+        });
+
+        new Vue({
+            el: '#app'
+        });
+    </script>
+</body>
+</html>
